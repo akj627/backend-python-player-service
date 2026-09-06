@@ -8,7 +8,9 @@ import ollama
 app = Flask(__name__)
 
 # Load CSV file in pandas dataframe and create SQLite database
-df = pd.read_csv('Player.csv')
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+df = pd.read_csv(os.path.join(BASE_DIR, 'Player.csv'))
 engine = create_engine('sqlite:///player.db', echo=True)
 df.to_sql('players', con=engine, if_exists='replace', index=False)
 
