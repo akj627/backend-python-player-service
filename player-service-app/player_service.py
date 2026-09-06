@@ -1,9 +1,12 @@
+import os
 import sqlite3
 from sqlalchemy import create_engine
 
 class PlayerService:
-    def __init__(self):
-        conn = sqlite3.connect("player.db")
+    def __init__(self, conn= None):
+        if conn is None:
+            db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'player.db')
+            conn = sqlite3.connect(db_path)
         self.conn = conn
         self.cursor = conn.cursor()
         self.columns = self.__get_columns()

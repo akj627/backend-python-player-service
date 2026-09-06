@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Flask (app.py)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/player-service-app/app.py",
+      "cwd": "${workspaceFolder}/player-service-app",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
+}
