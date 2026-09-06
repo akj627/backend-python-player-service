@@ -24,8 +24,8 @@ class PlayerService:
     
     def search_by_player(self, player_id):
 
-        query = "SELECT * FROM players WHERE playerId='{}'".format(player_id)
-        result = self.cursor.execute(query).fetchall()
+        query = "SELECT * FROM players WHERE playerId = ?"
+        result = self.cursor.execute(query, (player_id,)).fetchall()
 
         dic = {}
 
@@ -35,8 +35,8 @@ class PlayerService:
 
     def search_by_country(self, birth_country):
 
-        query = "SELECT * FROM players WHERE birthCountry='{}'".format(birth_country)
-        result = self.cursor.execute(query).fetchall()
+        query = "SELECT * FROM players WHERE birthCountry = ?"
+        result = self.cursor.execute(query, (birth_country,)).fetchall()
 
         return result
 

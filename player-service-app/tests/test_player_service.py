@@ -39,8 +39,12 @@ def test_search_by_player_is_sql_injectable(service):
 
     # Vulnerable behaviour: the WHERE clause matched every row, and the method
     # returns the last one instead of {}.
-    assert result != {}, "expected {} for a bogus id - injection was blocked"
-    assert result["playerId"] == "c3"
+
+    assert result == {}, "expected {} for a bogus id - injection was blocked"
+    assert len(result) == 0, "expected no rows for a bogus id - injection was blocked"
+    # below asserts are commented out because they would fail with the current vulnerable implementation
+    #assert result != {}, "expected {} for a bogus id - injection was blocked"
+    #assert result["playerId"] == "c3"
 
 
 def test_search_by_country_is_sql_injectable(service):
@@ -48,4 +52,7 @@ def test_search_by_country_is_sql_injectable(service):
     whole table regardless of the country filter."""
     everyone = service.search_by_country("' OR '1'='1")
 
-    assert len(everyone) == 3  # all rows leaked past the birthCountry filter
+    assert everyone == [], "expected [] for a bogus country - injection was blocked"
+    assert len(everyone) == 0, "expected no rows for a bogus country - injection was blocked"
+    # below asserts are commented out because they would fail with the current vulnerable implementation
+    #assert len(everyone) == 3  # all rows leaked past the birthCountry filter
