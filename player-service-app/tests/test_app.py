@@ -1,5 +1,4 @@
 import pytest
-from app import app
 from player_service import PlayerService
 import sqlite3
 

@@ -17,14 +17,18 @@ df.to_sql('players', con=engine, if_exists='replace', index=False)
 # Get all players
 @app.route('/v1/players', methods=['GET'])
 def get_players():
-    player_service = PlayerService()
-    result = player_service.get_all_players()
-    return result
+   with PlayerService() as svc:
+        country = request.args.get('birthCountry')
+        if country:
+            players = svc.search_by_country(country)
+            return jsonify(players)
+        else:
+            return jsonify(svc.get_all_players())
 
 @app.route('/v1/players/<string:player_id>')
 def query_player_id(player_id):
-    player_service = PlayerService()
-    result = player_service.search_by_player(player_id)
+    with PlayerService() as svc:
+        result = svc.search_by_player(player_id)
 
     if len(result) == 0:
         return jsonify({"error": "No record found with player_id={}".format(player_id)})

@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 
 class PlayerService:
     def __init__(self, conn= None):
+        self.__owns_conn = conn is None
         if conn is None:
             db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'player.db')
             conn = sqlite3.connect(db_path)
@@ -50,3 +51,10 @@ class PlayerService:
         self.cursor.execute("PRAGMA table_info(players)")
         columns = [column[1] for column in self.cursor.fetchall()]
         return columns
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self.__owns_conn:
+            self.conn.close()
